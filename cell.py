@@ -3,7 +3,7 @@ import random
 
 
 class Cell():
-    def __init__(self, x1, y1, x2, y2, col, row, win : Window):
+    def __init__(self, x1, y1, x2, y2, col, row, win=None):
         self.has_left_wall = True
         self.has_right_wall = True
         self.has_top_wall = True
@@ -47,6 +47,8 @@ class Cell():
             self._win.draw_line(bottom_wall, "white")
 
     def draw_move(self, to_cell, depth, undo=False):
+        if self._win == None:
+            return
 
         fill_colour = self._depth_to_hex(depth)
 
@@ -115,6 +117,8 @@ class Cell():
                 maze._cells[cell_to_i][cell_to_j]._break_walls_r(cell_to_i, cell_to_j, maze)
 
     def _depth_to_hex(self, depth):
+        if self._win == None:
+            return
         c = 1
         h = (depth * 2) % 360
         x = c * (1 - abs((h / 60) % 2 - 1))

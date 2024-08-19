@@ -7,19 +7,41 @@ import sys
 
 def main():
     sys.setrecursionlimit(3000)
-    win = Window(800, 800)
+    win = Window(1600, 800)
 
-    maze1 = Maze(20, 90, 10, 10, 20, 20, win, 0)
-    maze1.solve()
+    scale = 60
 
-    maze1 = Maze(300, 90, 10, 10, 20, 20, win, 1)
-    maze1.solve()
+    maze7 = Maze(20, 440, scale, scale, 200 / scale, 200 / scale, 0)
+    maze8 = Maze(230, 440, scale, scale, 200 / scale, 200 / scale, 1)
+    
+    maze7.solve()
+    maze8.solve()
 
-    maze1 = Maze(20, 300, 50, 50, 5, 5, win, 0)
-    maze1.solve()
+    scale = 10
 
-    maze1 = Maze(300, 300, 50, 50, 5, 5, win, 1)
+    maze1 = Maze(20, 20, scale, scale, 200 / scale, 200 / scale, 0, win)
+    maze2 = Maze(230, 20, scale, scale, 200 / scale, 200 / scale, 1, win)
+
     maze1.solve()
+    maze2.solve()
+
+    scale = 20
+
+    maze3 = Maze(20, 230, scale, scale, 200 / scale, 200 / scale, 0, win)
+    maze4 = Maze(230, 230, scale, scale, 200 / scale, 200 / scale, 1, win)
+
+    maze3.solve()
+    maze4.solve()
+
+    scale = 40
+
+    maze5 = Maze(20, 440, scale, scale, 200 / scale, 200 / scale, 0, win)
+    maze6 = Maze(230, 440, scale, scale, 200 / scale, 200 / scale, 1, win)
+
+    maze5.solve()
+    maze6.solve()
+
+
 
     win.wait_for_close()
 
