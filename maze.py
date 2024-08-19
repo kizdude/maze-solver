@@ -95,10 +95,39 @@ class Maze():
         
         # left
         if not i - 1 < 0:
-            if not current_cell.has_left_wall and self._cells[i - 1][j].visited == False:
-                self._draw_move(i, j, to_cell_i, to_cell_j)
-                self._solve_r(i - 1, j)
+            to_cell = self._cells[i - 1][j]
+            if not current_cell.has_left_wall and to_cell.visited == False:
+                current_cell.draw_move(to_cell)
+                if self._solve_r(i - 1, j):
+                    return True
+                current_cell.draw_move(to_cell, True)
 
-    def _draw_move(self, from_i, from_j, to_i, to_j):
-        point_from = Point(from_i, from_j)
-        move_line = Line()
+        # right
+        if not i + 1 < self.num_cols - 1:
+            to_cell = self._cells[i + 1][j]
+            if not current_cell.has_right_wall and to_cell.visited == False:
+                current_cell.draw_move(to_cell)
+                if self._solve_r(i + 1, j):
+                    return True
+                current_cell.draw_move(to_cell, True)
+
+        # down
+        if not j - 1 < 0:
+            to_cell = self._cells[i][j - 1]
+            if not current_cell.has_bottom_wall and to_cell.visited == False:
+                current_cell.draw_move(to_cell)
+                if self._solve_r(i, j - 1):
+                    return True
+                current_cell.draw_move(to_cell, True)
+
+        # up
+        if not j + 1 < self.num_rows:
+            to_cell = self._cells[i][j + 1]
+            if not current_cell.has_top_wall and to_cell.visited == False:
+                current_cell.draw_move(to_cell)
+                if self._solve_r(i, j + 1):
+                    return True
+                current_cell.draw_move(to_cell, True)
+        
+        return False
+

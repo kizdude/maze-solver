@@ -109,5 +109,3 @@ class Cell():
 
                 maze._cells[cell_to_i][cell_to_j]._break_walls_r(cell_to_i, cell_to_j, maze)
 
-
-
