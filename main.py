@@ -3,6 +3,7 @@ from cell import Cell
 from maze import Maze
 import random
 import sys
+import time
 
 
 def main():
@@ -14,8 +15,15 @@ def main():
     maze7 = Maze(20, 440, scale, scale, 200 / scale, 200 / scale, 0)
     maze8 = Maze(230, 440, scale, scale, 200 / scale, 200 / scale, 1)
     
+    start = time.time()
     maze7.solve()
+    end = time.time()
+    print(f"Time taken to run the code was {end-start} seconds")
+
+    start = time.time()
     maze8.solve()
+    end = time.time()
+    print(f"Time taken to run the code was {end-start} seconds")
 
     scale = 10
 
