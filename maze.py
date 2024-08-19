@@ -65,10 +65,12 @@ class Maze():
 
 
     def _animate(self, speed=1):
+        if self.num_rows >= 30:
+            return
         if self.win == None:
             return
         self.win.redraw()
-        time.sleep(1 / (self.num_rows * self.num_cols) / 20 / math.log(self.num_rows * self.num_cols, 4))
+        time.sleep(1 / (self.num_rows * self.num_cols * self.num_rows) / 20 / math.log(self.num_rows * self.num_cols, 2))
 
 
     def _break_entrance_and_exit(self):
@@ -89,7 +91,7 @@ class Maze():
             for j in range(self.num_rows):
                 self._cells[i][j].visited = False
 
-    def _count_cells_visited(self):
+    def get_cells_visited(self):
         count = 0
         for i in range(self.num_cols):
             for j in range(self.num_rows):
@@ -98,19 +100,16 @@ class Maze():
         return count
 
     def solve(self):
-        time.sleep(0.5)
+        if self.win != None:
+            time.sleep(0.5)
         if self.search == 0:
             self._solve_depth_first_r(0, 0)
             self._animate(1)
-            visited = self._count_cells_visited()
-            print(f"depth first search visited {visited} cells with {self.comparisons} comparisons")
         if self.search == 1: 
             self._solve_breadth_first(0, 0)
             self._animate(1)
-            visited = self._count_cells_visited()
-            print(f"breadth first search visited {visited} cells with {self.comparisons} comparisons")
-        
-        
+        if self.num_rows >= 30 and self.win != None:
+            self.win.redraw()
 
 
     def _solve_depth_first_r(self, i, j, depth=0):
@@ -178,20 +177,21 @@ class Maze():
         self._animate(2)
         to_visit = []
         depth = 0
+        current_index = (i, j)
         current_cell = self._cells[i][j]
 
-        cell_and_depth = (current_cell, depth)
-        to_visit.append(cell_and_depth)
+        current_index_and_depth = (current_index, depth)
+        to_visit.append(current_index_and_depth)
 
         while len(to_visit) > 0:
 
-            current_cell_and_depth = to_visit.pop(0)
-            current_cell = current_cell_and_depth[0]
-            current_depth = current_cell_and_depth[1]
+            current_index_and_depth = to_visit.pop(0)
+            i = current_index_and_depth[0][0]
+            j = current_index_and_depth[0][1]
+            current_cell = self._cells[i][j]
+            current_depth = current_index_and_depth[1]
 
             current_cell.visited = True
-            i = current_cell.col
-            j = current_cell.row
 
             if i == self.num_cols - 1 and j == self.num_rows - 1:
                 return True
@@ -203,8 +203,9 @@ class Maze():
                 self._animate(2)
                 if not current_cell.has_left_wall and neighbour_cell.visited == False and neighbour_cell not in to_visit:
                     current_cell.draw_move(neighbour_cell, depth)
-                    neighbour_cell_and_depth = (neighbour_cell, depth)
-                    to_visit.append(neighbour_cell_and_depth)
+                    neighbour_index = (i - 1, j)
+                    neighbour_index_and_depth = (neighbour_index, depth)
+                    to_visit.append(neighbour_index_and_depth)
 
             # right
             if not i + 1 > self.num_cols - 1:
@@ -213,8 +214,9 @@ class Maze():
                 neighbour_cell = self._cells[i + 1][j]
                 if not current_cell.has_right_wall and neighbour_cell.visited == False and neighbour_cell not in to_visit:
                     current_cell.draw_move(neighbour_cell, depth)
-                    neighbour_cell_and_depth = (neighbour_cell, depth)
-                    to_visit.append(neighbour_cell_and_depth)
+                    neighbour_index = (i + 1, j)
+                    neighbour_index_and_depth = (neighbour_index, depth)
+                    to_visit.append(neighbour_index_and_depth)
 
             # up
             if not j - 1 < 0:
@@ -223,8 +225,9 @@ class Maze():
                 neighbour_cell = self._cells[i][j - 1]
                 if not current_cell.has_top_wall and neighbour_cell.visited == False and neighbour_cell not in to_visit:
                     current_cell.draw_move(neighbour_cell, depth)
-                    neighbour_cell_and_depth = (neighbour_cell, depth)
-                    to_visit.append(neighbour_cell_and_depth)
+                    neighbour_index = (i, j - 1)
+                    neighbour_index_and_depth = (neighbour_index, depth)
+                    to_visit.append(neighbour_index_and_depth)
 
             # down
             if not j + 1 > self.num_rows - 1:
@@ -233,8 +236,9 @@ class Maze():
                 neighbour_cell = self._cells[i][j + 1]
                 if not current_cell.has_bottom_wall and neighbour_cell.visited == False and neighbour_cell not in to_visit:
                     current_cell.draw_move(neighbour_cell, depth)
-                    neighbour_cell_and_depth = (neighbour_cell, depth)
-                    to_visit.append(neighbour_cell_and_depth)
+                    neighbour_index = (i, j + 1)
+                    neighbour_index_and_depth = (neighbour_index, depth)
+                    to_visit.append(neighbour_index_and_depth)
             
             depth += 1
         
