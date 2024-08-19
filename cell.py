@@ -29,19 +29,19 @@ class Cell():
         bottom_wall = Line(bottom_left, bottom_right)
 
         if self.has_left_wall:
-            self._win.draw_line(left_wall, "red")
+            self._win.draw_line(left_wall, "blue")
         else:
             self._win.draw_line(left_wall, "white")
         if self.has_right_wall:           
-            self._win.draw_line(right_wall, "red")
+            self._win.draw_line(right_wall, "blue")
         else:
             self._win.draw_line(right_wall, "white")
         if self.has_top_wall:
-            self._win.draw_line(top_wall, "red")
+            self._win.draw_line(top_wall, "blue")
         else:
             self._win.draw_line(top_wall, "white")
         if self.has_bottom_wall:
-            self._win.draw_line(bottom_wall, "red")
+            self._win.draw_line(bottom_wall, "blue")
         else:
             self._win.draw_line(bottom_wall, "white")
 
